@@ -6,16 +6,13 @@ A Todo App built in rust that provides daily todo lists, with a master list.
 Usage: todo-rs [OPTIONS]
 
 Options:
-
-  -s, --simple       Prints tasks to stdout
-  
-  -m, --master       Load the master task list
-  
-  -y, --yesterday    Load Yesterdays date (effects --date too)
-  
-  -d, --date <DATE>  Load a specific date, format must be DD-MM-YY
-  
-  -h, --help         Print help
+|short|long|description|
+|-----|----|-----------|
+| -s, | --simple      | Prints tasks to stdout| 
+| -m, | --master      | Load the master task list|
+| -y, | --yesterday   | Load Yesterdays date (effects --date too)
+| -d, | --date <DATE> | Load a specific date, format must be DD-MM-YY
+| -h, | --help        | Print help
   
 
 ## Screenshots
