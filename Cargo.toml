@@ -3,6 +3,9 @@ name = "todo-rs"
 version = "1.0.0"
 edition = "2021"
 description = "A Todo App built in rust that provides daily todo lists, with a master list."
+repository = "https://github.com/SoloJessy/todo-rs"
+readme = "README.md"
+licence-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
