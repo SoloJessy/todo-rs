@@ -738,7 +738,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "todo-list"
+name = "todo-rs"
 version = "1.0.0"
 dependencies = [
  "anyhow",
