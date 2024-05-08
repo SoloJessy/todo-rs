@@ -54,6 +54,7 @@ lazy_static! {
         Kb::new(Kc::Char('p'), Km::None, "Change Task Priority."),
         Kb::new(Kc::Char('t'), Km::None, "Toggle Task Completion."),
         Kb::new(Kc::Char('D'), Km::Shift, "Delete Task."),
+        Kb::new(Kc::Char('h'), Km::None, "Split completed tasks."),
         Kb::new(Kc::Esc, Km::None, "Clear Selected / Cancel Input."),
         Kb::new(Kc::Char('k'), Km::None, "Show this Modal."),
         Kb::new(Kc::Char('q'), Km::None, "Quit the App.",),

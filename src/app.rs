@@ -22,6 +22,7 @@ pub struct App<'a> {
     event_state: EventState,
     text_buf: String,
     show_keybinds: bool,
+    split_tasks: bool,
     current_file: PathBuf,
     exit: bool,
 }
@@ -34,6 +35,7 @@ impl<'a> App<'a> {
             event_state: EventState::Normal,
             text_buf: String::new(),
             show_keybinds: false,
+            split_tasks: false,
             current_file: current_file.to_path_buf(),
             exit: false,
         }
@@ -112,6 +114,7 @@ impl<'a> App<'a> {
                 self.change_task_priority(self.text_buf.parse().ok());
                 self.text_buf = String::new();
             }
+            KeyCode::Char('h') => self.split_tasks = !self.split_tasks,
             KeyCode::Esc => {
                 self.selected = None;
                 self.text_buf = String::new();
@@ -190,6 +193,11 @@ impl Widget for &App<'_> {
             .constraints(vec![Constraint::Length(1), Constraint::Min(1)])
             .split(outer_layout[1])[1];
 
+        let split_task_layout = Layout::default()
+            .direction(Direction::Vertical)
+            .constraints(vec![Constraint::Percentage(50), Constraint::Percentage(50)])
+            .split(task_layout);
+
         // Color the background.
         Block::default().bg(palette::BACKGROUND).render(area, buf);
 
@@ -238,7 +246,13 @@ impl Widget for &App<'_> {
             }
         };
 
-        let mut rows = Rows::new(task_layout);
+        let mut rows = Rows::new(split_task_layout[0]);
+        let mut completed_rows = Rows::new(split_task_layout[1]);
+
+        if !self.split_tasks {
+            rows = Rows::new(task_layout);
+        }
+
         self.data.iter().enumerate().for_each(|(index, task)| {
             let (priority, desc) = task.get_data();
 
@@ -258,8 +272,20 @@ impl Widget for &App<'_> {
                 task_widget.spans[2].style.fg = Some(palette::BASE_2);
             }
 
-            if let Some(row) = rows.next() {
-                task_widget.render(row, buf);
+            let render = |rows: &mut Rows| {
+                if let Some(row) = rows.next() {
+                    task_widget.render(row, buf);
+                }
+            };
+
+            if self.split_tasks {
+                if task.completed {
+                    render(&mut completed_rows);
+                } else {
+                    render(&mut rows);
+                }
+            } else {
+                render(&mut rows);
             }
         });
 
