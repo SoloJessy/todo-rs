@@ -12,7 +12,7 @@ use crate::{keybinds, palette, tui, Task};
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 enum EventState {
     Normal,
-    NewTask,
+    TextInput,
 }
 
 #[derive(Debug)]
@@ -64,7 +64,7 @@ impl<'a> App<'a> {
     }
 
     fn handle_key_press_event(&mut self, key_event: KeyEvent) {
-        if self.event_state == EventState::NewTask {
+        if self.event_state == EventState::TextInput {
             match key_event.code {
                 KeyCode::Esc => {
                     self.text_buf = String::new();
@@ -92,7 +92,7 @@ impl<'a> App<'a> {
             KeyCode::Char('q') => self.exit = true,
             KeyCode::Char('n') => {
                 self.text_buf = String::new();
-                self.event_state = EventState::NewTask;
+                self.event_state = EventState::TextInput;
             }
             KeyCode::Char('k') => self.show_keybinds = !self.show_keybinds,
             KeyCode::Char('s') => {
