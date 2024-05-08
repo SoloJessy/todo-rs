@@ -49,13 +49,13 @@ impl fmt::Display for Kc {
 
 lazy_static! {
     pub static ref KEYBINDS: Vec<Kb> = vec![
-        Kb::new(Kc::Char('q'), Km::None, "Quit the App.",),
         Kb::new(Kc::Char('n'), Km::None, "Create new Task."),
-        Kb::new(Kc::Char('k'), Km::None, "Show this Modal."),
         Kb::new(Kc::Char('s'), Km::None, "Select Task."),
-        Kb::new(Kc::Char('t'), Km::None, "Toggle Task Completion."),
         Kb::new(Kc::Char('p'), Km::None, "Change Task Priority."),
+        Kb::new(Kc::Char('t'), Km::None, "Toggle Task Completion."),
         Kb::new(Kc::Char('D'), Km::Shift, "Delete Task."),
-        Kb::new(Kc::Esc, Km::None, "Clear Selected / Cancel Input.")
+        Kb::new(Kc::Esc, Km::None, "Clear Selected / Cancel Input."),
+        Kb::new(Kc::Char('k'), Km::None, "Show this Modal."),
+        Kb::new(Kc::Char('q'), Km::None, "Quit the App.",),
     ];
 }
