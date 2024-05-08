@@ -228,13 +228,23 @@ impl Widget for &App<'_> {
             .title_style(Style::default().fg(palette::PURPLE))
             .render(outer_layout[1], buf);
 
+        let priority_color = |x: i8| {
+            if x < 50 {
+                palette::GREEN
+            } else if x < 100 {
+                palette::ORANGE
+            } else {
+                palette::RED
+            }
+        };
+
         let mut rows = Rows::new(task_layout);
         self.data.iter().enumerate().for_each(|(index, task)| {
             let (priority, desc) = task.get_data();
 
             let mut task_widget = Line::from(vec![
                 Span::from(format!("{: >4}", index)).fg(palette::WHITE),
-                Span::from(format!("{: ^8}", priority)).fg(palette::ORANGE),
+                Span::from(format!("{: ^8}", priority)).fg(priority_color(priority.into())),
                 Span::from(desc).fg(palette::YELLOW),
             ]);
 
