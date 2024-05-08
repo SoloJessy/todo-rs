@@ -64,7 +64,7 @@ impl<'a> App<'a> {
     }
 
     fn handle_key_press_event(&mut self, key_event: KeyEvent) {
-        if self.event_state != EventState::Normal {
+        if self.event_state == EventState::NewTask {
             match key_event.code {
                 KeyCode::Esc => {
                     self.text_buf = String::new();
@@ -74,10 +74,7 @@ impl<'a> App<'a> {
                     self.text_buf.pop();
                 }
                 KeyCode::Enter => {
-                    match self.event_state {
-                        EventState::NewTask => self.data.push(Task::new(&self.text_buf)),
-                        _ => {}
-                    };
+                    self.data.push(Task::new(&self.text_buf));
                     self.event_state = EventState::Normal;
                     self.text_buf = String::new();
                 }
@@ -88,35 +85,35 @@ impl<'a> App<'a> {
                 }
                 _ => {}
             }
-        } else {
-            match key_event.code {
-                KeyCode::Char(x) if x.is_digit(10) => self.text_buf.push(x),
-                KeyCode::Char('q') => self.exit = true,
-                KeyCode::Char('n') => self.event_state = EventState::NewTask,
-                KeyCode::Char('k') => self.show_keybinds = !self.show_keybinds,
-                KeyCode::Char('s') => {
-                    // self.event_state = EventState::SelectTask
-                    self.selected = match self.text_buf.parse() {
-                        Ok(num) => match num >= self.data.len() {
-                            true => None,
-                            false => Some(num),
-                        },
-                        Err(_) => None,
-                    };
-                    self.text_buf = String::new();
-                }
-                KeyCode::Char('D') => self.delete_task(),
-                KeyCode::Char('t') => self.toggle_task(),
-                KeyCode::Char('p') => {
-                    // self.event_state = EventState::ChangePriority
-                    self.change_task_priority(self.text_buf.parse().ok())
-                }
-                KeyCode::Esc => {
-                    self.selected = None;
-                    self.text_buf = String::new();
-                }
-                _ => {}
+            return;
+        }
+        match key_event.code {
+            KeyCode::Char(x) if x.is_ascii_digit() => self.text_buf.push(x),
+            KeyCode::Char('q') => self.exit = true,
+            KeyCode::Char('n') => self.event_state = EventState::NewTask,
+            KeyCode::Char('k') => self.show_keybinds = !self.show_keybinds,
+            KeyCode::Char('s') => {
+                // self.event_state = EventState::SelectTask
+                self.selected = match self.text_buf.parse() {
+                    Ok(num) => match num >= self.data.len() {
+                        true => None,
+                        false => Some(num),
+                    },
+                    Err(_) => None,
+                };
+                self.text_buf = String::new();
             }
+            KeyCode::Char('D') => self.delete_task(),
+            KeyCode::Char('t') => self.toggle_task(),
+            KeyCode::Char('p') => {
+                // self.event_state = EventState::ChangePriority
+                self.change_task_priority(self.text_buf.parse().ok())
+            }
+            KeyCode::Esc => {
+                self.selected = None;
+                self.text_buf = String::new();
+            }
+            _ => {}
         }
     }
 
@@ -200,9 +197,9 @@ impl Widget for &App<'_> {
         let input_container_block_inner = input_container_block.inner(header_layout[1]);
         let padding = || {
             if input_container_block_inner.width <= 80 {
-                return 0;
+                0
             } else {
-                return (input_container_block_inner.width - 80) / 2;
+                (input_container_block_inner.width - 80) / 2
             }
         };
         input_container_block = input_container_block.padding(Padding::horizontal(padding()));
