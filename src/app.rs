@@ -13,8 +13,6 @@ use crate::{keybinds, palette, tui, Task};
 enum EventState {
     Normal,
     NewTask,
-    SelectTask,
-    ChangePriority,
 }
 
 #[derive(Debug)]
@@ -78,18 +76,6 @@ impl<'a> App<'a> {
                 KeyCode::Enter => {
                     match self.event_state {
                         EventState::NewTask => self.data.push(Task::new(&self.text_buf)),
-                        EventState::ChangePriority => {
-                            self.change_task_priority(self.text_buf.parse().ok())
-                        }
-                        EventState::SelectTask => {
-                            self.selected = match self.text_buf.parse() {
-                                Ok(num) => match num >= self.data.len() {
-                                    true => None,
-                                    false => Some(num),
-                                },
-                                Err(_) => None,
-                            }
-                        }
                         _ => {}
                     };
                     self.event_state = EventState::Normal;
@@ -104,14 +90,31 @@ impl<'a> App<'a> {
             }
         } else {
             match key_event.code {
+                KeyCode::Char(x) if x.is_digit(10) => self.text_buf.push(x),
                 KeyCode::Char('q') => self.exit = true,
                 KeyCode::Char('n') => self.event_state = EventState::NewTask,
                 KeyCode::Char('k') => self.show_keybinds = !self.show_keybinds,
-                KeyCode::Char('s') => self.event_state = EventState::SelectTask,
+                KeyCode::Char('s') => {
+                    // self.event_state = EventState::SelectTask
+                    self.selected = match self.text_buf.parse() {
+                        Ok(num) => match num >= self.data.len() {
+                            true => None,
+                            false => Some(num),
+                        },
+                        Err(_) => None,
+                    };
+                    self.text_buf = String::new();
+                }
                 KeyCode::Char('D') => self.delete_task(),
                 KeyCode::Char('t') => self.toggle_task(),
-                KeyCode::Char('p') => self.event_state = EventState::ChangePriority,
-                KeyCode::Esc => self.selected = None,
+                KeyCode::Char('p') => {
+                    // self.event_state = EventState::ChangePriority
+                    self.change_task_priority(self.text_buf.parse().ok())
+                }
+                KeyCode::Esc => {
+                    self.selected = None;
+                    self.text_buf = String::new();
+                }
                 _ => {}
             }
         }
