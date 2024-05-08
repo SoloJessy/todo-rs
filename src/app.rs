@@ -174,7 +174,7 @@ impl Widget for &App<'_> {
             .direction(Direction::Vertical)
             .constraints(vec![
                 Constraint::Min(2),
-                Constraint::Max(8),
+                Constraint::Max(keybinds::KEYBINDS.len() as u16),
                 Constraint::Min(1),
             ])
             .split(
