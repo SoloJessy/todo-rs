@@ -22,7 +22,7 @@ mod tui;
 
 #[derive(Parser)]
 struct Cli {
-    /// Prints tasks to stdout.
+    /// Prints task's to stdout.
     #[arg(long = "simple", short = 's')]
     simple: bool,
 
@@ -30,7 +30,7 @@ struct Cli {
     #[arg(long = "master", short = 'm')]
     master: bool,
 
-    /// Load Yesterdays date (effects --date too).
+    /// Load Yesterday's date (effects --date too).
     #[arg(long = "yesterday", short = 'y')]
     yesterday: bool,
 
@@ -38,6 +38,7 @@ struct Cli {
     #[arg(long = "date", short = 'd')]
     date: Option<String>,
 
+    /// Print the app's version number.
     #[arg(exclusive = true, long = "version", short = 'v')]
     version: bool,
 }
@@ -53,7 +54,7 @@ fn main() -> Result<()> {
 
     if args.version {
         println!(
-            "App {} version: {}",
+            "App: '{}' version: '{}'",
             env!("CARGO_PKG_NAME"),
             env!("CARGO_PKG_VERSION")
         );
