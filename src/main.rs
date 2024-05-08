@@ -22,24 +22,24 @@ mod tui;
 
 #[derive(Parser)]
 struct Cli {
-    /// Prints task's to stdout.
-    #[arg(long = "simple", short = 's')]
+    /// Prints tasks to stdout.
+    #[arg(long = "simple", short = 's', display_order = 10)]
     simple: bool,
 
     /// Load the master task list.
     #[arg(long = "master", short = 'm')]
     master: bool,
 
-    /// Load Yesterday's date (effects --date too).
+    /// Load Yesterday's date.
     #[arg(long = "yesterday", short = 'y')]
     yesterday: bool,
 
-    /// Load a specific date, format must be DD-MM-YY.
-    #[arg(long = "date", short = 'd')]
+    /// Load a specific date.
+    #[arg(long = "date", short = 'd', value_name = "DD-MM-YY")]
     date: Option<String>,
 
     /// Print the app's version number.
-    #[arg(exclusive = true, long = "version", short = 'v')]
+    #[arg(exclusive = true, long = "version", short = 'v', display_order = 11)]
     version: bool,
 }
 

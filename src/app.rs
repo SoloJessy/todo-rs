@@ -90,7 +90,10 @@ impl<'a> App<'a> {
         match key_event.code {
             KeyCode::Char(x) if x.is_ascii_digit() => self.text_buf.push(x),
             KeyCode::Char('q') => self.exit = true,
-            KeyCode::Char('n') => self.event_state = EventState::NewTask,
+            KeyCode::Char('n') => {
+                self.text_buf = String::new();
+                self.event_state = EventState::NewTask;
+            }
             KeyCode::Char('k') => self.show_keybinds = !self.show_keybinds,
             KeyCode::Char('s') => {
                 // self.event_state = EventState::SelectTask
@@ -197,10 +200,9 @@ impl Widget for &App<'_> {
         let input_container_block_inner = input_container_block.inner(header_layout[1]);
         let padding = || {
             if input_container_block_inner.width <= 80 {
-                0
-            } else {
-                (input_container_block_inner.width - 80) / 2
+                return 0;
             }
+            (input_container_block_inner.width - 80) / 2
         };
         input_container_block = input_container_block.padding(Padding::horizontal(padding()));
 
@@ -218,6 +220,7 @@ impl Widget for &App<'_> {
                 " {} ",
                 self.current_file.file_name().unwrap().to_str().unwrap()
             ))
+            .title_alignment(Alignment::Right)
             .border_style(Style::default().fg(palette::BASE_1))
             .borders(Borders::TOP)
             .title_style(Style::default().fg(palette::PURPLE))
