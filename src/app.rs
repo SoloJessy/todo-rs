@@ -226,19 +226,23 @@ impl Widget for &App<'_> {
         let mut rows = Rows::new(task_layout);
         self.data.iter().enumerate().for_each(|(index, task)| {
             let (priority, desc) = task.get_data();
+
             let mut task_widget = Line::from(vec![
                 Span::from(format!("{: >4}", index)).fg(palette::WHITE),
                 Span::from(format!("{: ^8}", priority)).fg(palette::ORANGE),
                 Span::from(desc).fg(palette::YELLOW),
             ]);
+
             if let Some(n) = self.selected {
                 if n == index {
-                    task_widget = task_widget.bg(palette::BASE_2);
+                    task_widget = task_widget.bg(palette::BASE_1);
                 }
             }
+
             if task.completed {
-                task_widget = task_widget.add_modifier(Modifier::CROSSED_OUT);
+                task_widget.spans[2].style.fg = Some(palette::BASE_2);
             }
+
             if let Some(row) = rows.next() {
                 task_widget.render(row, buf);
             }
@@ -246,10 +250,13 @@ impl Widget for &App<'_> {
 
         if self.show_keybinds {
             Clear.render(keybind_layout, buf);
+
             Block::default()
                 .bg(palette::BASE_1)
                 .render(keybind_layout, buf);
+
             let mut rows = Rows::new(keybind_layout);
+
             keybinds::KEYBINDS.iter().for_each(|kb| {
                 let binds_text = Line::from(vec![
                     Span::from(format!("{:^5}", kb.key.to_string())).fg(palette::LIGHT_BLUE),
@@ -258,6 +265,7 @@ impl Widget for &App<'_> {
                     Span::from("|").fg(palette::WHITE),
                     Span::from(format!(" {}", kb.description)).fg(palette::YELLOW),
                 ]);
+
                 if let Some(row) = rows.next() {
                     binds_text.render(row, buf)
                 }
