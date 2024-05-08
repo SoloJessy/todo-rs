@@ -258,7 +258,7 @@ impl Widget for &App<'_> {
 
             let mut task_widget = Line::from(vec![
                 Span::from(format!("{: >4}", index)).fg(palette::WHITE),
-                Span::from(format!("{: ^8}", priority)).fg(priority_color(priority.into())),
+                Span::from(format!("{: ^8}", priority)).fg(priority_color(priority)),
                 Span::from(desc).fg(palette::YELLOW),
             ]);
 
