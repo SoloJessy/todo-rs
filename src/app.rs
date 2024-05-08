@@ -198,15 +198,17 @@ impl Widget for &App<'_> {
 
         let mut input_container_block = Block::default();
         let input_container_block_inner = input_container_block.inner(header_layout[1]);
+
         let padding = || {
             if input_container_block_inner.width <= 80 {
                 return 0;
             }
             (input_container_block_inner.width - 80) / 2
         };
+
         input_container_block = input_container_block.padding(Padding::horizontal(padding()));
 
-        if self.event_state != EventState::Normal {
+        if self.event_state == EventState::TextInput {
             Paragraph::new(input)
                 .block(Block::default().bg(palette::BASE_1))
                 .render(input_container_block.inner(header_layout[1]), buf)
