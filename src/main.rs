@@ -37,6 +37,9 @@ struct Cli {
     /// Load a specific date, format must be DD-MM-YY.
     #[arg(long = "date", short = 'd')]
     date: Option<String>,
+
+    #[arg(exclusive = true, long = "version", short = 'v')]
+    version: bool,
 }
 
 enum LoadTarget {
@@ -47,6 +50,16 @@ enum LoadTarget {
 fn main() -> Result<()> {
     // color_eyre::install()?;
     let args = Cli::parse();
+
+    if args.version {
+        println!(
+            "App {} version: {}",
+            env!("CARGO_PKG_NAME"),
+            env!("CARGO_PKG_VERSION")
+        );
+        return Ok(());
+    }
+
     let mut date = Local::now().date_naive();
 
     if let Some(d) = args.date {
