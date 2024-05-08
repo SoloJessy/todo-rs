@@ -106,8 +106,8 @@ impl<'a> App<'a> {
             KeyCode::Char('D') => self.delete_task(),
             KeyCode::Char('t') => self.toggle_task(),
             KeyCode::Char('p') => {
-                // self.event_state = EventState::ChangePriority
-                self.change_task_priority(self.text_buf.parse().ok())
+                self.change_task_priority(self.text_buf.parse().ok());
+                self.text_buf = String::new();
             }
             KeyCode::Esc => {
                 self.selected = None;
