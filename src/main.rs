@@ -1,9 +1,6 @@
 #[macro_use]
 extern crate lazy_static;
 
-#[cfg(debug_assertions)]
-use std::str::FromStr;
-
 use chrono::{Local, NaiveDate};
 use clap::Parser;
 use std::fmt;
@@ -142,7 +139,7 @@ fn get_target_file(target: &LoadTarget) -> Result<PathBuf> {
     path.push(".local/share/todo-rs/");
 
     #[cfg(debug_assertions)]
-    let mut path = PathBuf::from_str("./todo-rs/")?;
+    let mut path = PathBuf::from("./todo-rs/");
 
     match target {
         LoadTarget::Date(date) => {
