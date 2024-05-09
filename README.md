@@ -8,13 +8,15 @@ Usage: todo-rs [OPTIONS]
 Options:
 |short|long|description|
 |-----|----|-----------|
-| -s, | --simple      | Prints tasks to stdout| 
-| -m, | --master      | Load the master task list|
-| -y, | --yesterday   | Load Yesterdays date (effects --date too)
-| -d, | --date <DATE> | Load a specific date, format must be DD-MM-YY
-| -h, | --help        | Print help
+| -m, | --master          | Load the master task list|
+| -y, | --yesterday       | Load Yesterdays date     |
+| -d, | --date <DD-MM-YY> | Load a specific date     |
+| -s, | --simple          | Prints tasks to stdout   | 
+| -v  | --version         | Prints Version Numbers   |
+| -h, | --help            | Print help               |
   
 
 ## Screenshots
-![TUI example 1](https://github.com/SoloJessy/todo-rs/assets/89361614/7c0c8c12-6490-464d-b706-2cc4027c0c0f)
-![TUI Keybindings](https://github.com/SoloJessy/todo-rs/assets/89361614/b9a388e8-c351-4db6-819a-0d05b2b93565)
+![Example Tasks](https://github.com/SoloJessy/todo-rs/assets/89361614/4a7d2c91-1c65-4fa0-8f2a-d1722a9b73e9)
+![Split Completed Tasks](https://github.com/SoloJessy/todo-rs/assets/89361614/8ec16755-7b38-4e04-8b06-0437c125e3af)
+![Keybindings Modal](https://github.com/SoloJessy/todo-rs/assets/89361614/16468dc7-f1fe-4e92-a7d3-6d1208c2a4c1)
